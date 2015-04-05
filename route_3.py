@@ -47,7 +47,6 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 	last=level-1
 		
 	if(level==len(cities)-1):
-		#cost	
 		i=path[level]	
 		j=path[last]
 		if(i<j):
@@ -64,17 +63,16 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 		if(curr_cost<bestCost):
 			bestPath_cost = deepcopy(path)
 			bestCost = curr_cost
-			print('cost',curr_cost,path)
+			
 
 		if(curr_time<bestTime):
 			bestPath_time = deepcopy(path)
 			bestTime = curr_time
-			print('time',curr_time,path)
+			
 		if(curr_distance<bestDistance):
 			bestPath_distance = deepcopy(path)
 			bestDistance = curr_distance
-			print('distance',curr_distance,path)
-
+			
 		return
 
 	i=hint[level]
@@ -92,7 +90,7 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 				c=data_cost[j][i-j]
 				t = data_time[j][i-j]
 				d = data_distance[j][i-j]
-		#	print("aqui",level,curr_cost+c<bestCost or curr_time+t < bestTime or curr_distance+d < bestDistance)
+		
 			if(curr_cost+c<bestCost or curr_time+t < bestTime or curr_distance+d < bestDistance):
 				path[level] = i
 				compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost+c,curr_time+t,curr_distance+d,hint,level+1)
