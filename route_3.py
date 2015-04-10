@@ -1,11 +1,15 @@
-from copy import deepcopy
 # -*- coding: utf-8 -*-
+
+from copy import deepcopy
+import random
+
 global bestPath_cost
 global bestPath_time
 global bestPath_distance
 global bestCost
 global bestTime
 global bestDistance
+
 
 
 def read_file(filename):
@@ -45,7 +49,7 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 	
 	i=0
 	last=level-1
-		
+
 	if(level==len(cities)-1):
 		i=path[level]	
 		j=path[last]
@@ -55,24 +59,37 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 			d = data_distance[i][j-i]
 		else:
 			c=data_cost[j][i-j]
-			t = data_time[i][j-i]
-			d = data_distance[i][j-i]
+			t = data_time[j][i-j]
+			d = data_distance[j][i-j]
 		curr_cost+=c
 		curr_time+=t
 		curr_distance+=d
+		
 		if(curr_cost<bestCost):
 			bestPath_cost = deepcopy(path)
 			bestCost = curr_cost
-			
+			s=''
+			for i in range(level):
+				s+=cities[path[i]]+', '
+	
+			print('cost',s,curr_cost)
 
 		if(curr_time<bestTime):
 			bestPath_time = deepcopy(path)
 			bestTime = curr_time
-			
+			s=''
+			for i in range(level):
+				s+=cities[path[i]]+', '
+	
+			print('time',s,curr_time)			
 		if(curr_distance<bestDistance):
 			bestPath_distance = deepcopy(path)
 			bestDistance = curr_distance
-			
+			s=''
+			for i in range(level):
+				s+=cities[path[i]]+', '
+	
+			print('distance',s,curr_distance)			
 		return
 
 	i=hint[level]
@@ -94,6 +111,7 @@ def compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost,cu
 			if(curr_cost+c<bestCost or curr_time+t < bestTime or curr_distance+d < bestDistance):
 				path[level] = i
 				compute_route(cities,data_cost,data_time,data_distance,path,end,curr_cost+c,curr_time+t,curr_distance+d,hint,level+1)
+
 				
 		i+=1
 	i=0
@@ -154,6 +172,10 @@ def greedy(begin,end,data,cities):
 		totalCost+=cost
 		visited+=1
 
+
+
+
+
 if __name__=='__main__':
 	begin = 'Lisbon'
 	end = 'Amsterdam'
@@ -172,11 +194,10 @@ if __name__=='__main__':
 	data_cost=data_cost[1:]
 	data_distance=data_distance[1:]
 	data_time=data_time[1:]
-
 	[bestPath_time,bestTime]=greedy(begin,end,data_time,cities)
 	[bestPath_distance,bestDistance]=greedy(begin,end,data_distance,cities)
 	[bestPath_cost,bestCost]=greedy(begin,end,data_cost,cities)
-	
+	print(bestPath_cost,bestCost)
 
 	hint=[]
 	for i in range(len(bestPath_cost)):
